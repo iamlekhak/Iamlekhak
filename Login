@@ -1,0 +1,180 @@
+<?php
+$host="localhost";
+$username="root";
+$password="";
+$db_name="McbTemp";
+$tbl_name="Temp2";
+
+mysql_connect("$host", "$username", "$password")or
+die("cannot connect");
+mysql_select_db("$db_name")or die("cannot select DB");
+
+session_start();
+if($_SERVER["REQUEST_METHOD"]=="POST")
+{
+	$myusername = mysql_real_escape_string($_POST['myusername']);
+	$mypassword = mysql_real_escape_string($_POST['mypassword']);
+	
+	$sql = "SELECT Name FROM Temp2 WHERE username = '$myusername' and password = '$mypassword'";
+	$result = mysql_query($sql);
+	$row = mysql_fetch_array($result,MYSQL_ASSOC);
+	
+
+	$count = mysql_num_rows($result);
+	if (!empty($myusername))
+	{
+	if($count == 1)
+	{
+		//session_register("myusername");
+		$_SESSION['login_user']=$myusername;
+		echo "<script type='text/javascript'>alert('Login successfull!')</script>";
+		header("location:welcome.php");	 	
+	}
+	else{
+		echo "<script type='text/javascript'>alert('Wrong Username or Password!')</script>";
+		}
+	
+	}
+	else {
+		echo "<script type='text/javascript'>alert('Enter Login Details!')</script>";
+	}
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Login</title>
+<link rel="stylesheet" type="text/css" href="Mcbstyle.css">
+</head>
+<div id = "Myhead">
+I am Lekhak
+<form name="form1" id = "Searchbox"method="post" action="">
+<input name="myusername" type="text" placeholder="Username" style="width:150px;"/>
+<input name="mypassword" type="password" placeholder="Password"  style="width:150px;"/>
+<input type="submit" value="Login" name="Submit"/>
+</form>
+</div>
+<span style="color:#7FDBFF" >Everyone has a story......</span><br>
+<body>
+<img src = "pen1.jpeg" style="float:right;"/>
+<div id = "Registerbox" >
+<h3>Register</h3>
+<form action="" method="GET">
+
+<font size="3">Name:<br/>
+<input type="text" name="Name"/>
+<br/><br/>
+
+Age:
+<br/>
+<input type="text" name="Age"/>
+
+<br/><br/>
+
+Sex:
+<br/>
+
+<input type="radio" name="Sex" value="Male"/>Male
+<input type="radio" name="Sex" value="Female"/>Female
+<br/><br/>
+
+Phone No.:<br/>
+<input type="text" name="Ph"/>
+<br/>
+<br/>
+
+Address:<br/>
+<textarea rows=3 cols=20 name="Address">
+</textarea>
+<br/><br/>
+
+Username:<br/>
+<input type="text" name="username"/>
+<br/><br/>
+
+Password:<br/>
+<input type="password" name="password"/>
+<br/><br/>
+
+<input type="submit" value="Register" name="submit"/>
+<input type="reset" Value ="Reset"/>
+
+
+</font>
+</form>
+</div>
+<img src = "pen7.gif" style="float:right;width:400px;height:400px;">
+
+<?php
+  	if(isset($_GET['submit']))
+    
+	{
+	
+	function submitinfo()
+		
+{
+
+		
+$Name = $_GET['Name'];
+	
+$Age = $_GET['Age'];
+		
+$Ph = $_GET['Ph'];
+		
+$Sex = $_GET['Sex'];
+		
+$Address = $_GET['Address'];
+
+$username = $_GET['username'];
+
+$password = $_GET['password'];
+       
+	
+	$connection=mysql_connect("localhost","root","")or die("could not connect to the server");
+	
+	
+	echo "<br>";
+	
+	
+		mysql_select_db("McbTemp");
+	
+
+	$str="INSERT into Temp2 values('$Name','$Age','$Ph','$Sex','$Address','$username','$password')";
+	
+	$sql=mysql_query($str);
+
+	
+	}
+
+		
+submitinfo();
+	
+echo "<script type='text/javascript'>alert('Registration Successful!')</script>";
+	
+ 	}
+
+
+
+?>
+<div id="myNav" class="overlay">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div class="overlay-content">
+<a href="/Template1/Main.html">Main Gate</a>
+</div>
+</div>
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Exit </span>
+
+<script>
+function openNav() {
+    document.getElementById("myNav").style.width = "50%";
+}
+
+function closeNav() {
+    document.getElementById("myNav").style.width = "0%";
+}
+</script>
+<div id = "footer">
+A Raviraj Mishra Production</div>
+</body>
+</html>
